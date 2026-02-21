@@ -107,6 +107,20 @@
         <h3>Thông tin đặt hàng</h3>
         <input type="text" id="customer-name" placeholder="Họ và tên *" required>
         <input type="tel" id="customer-phone" placeholder="Số điện thoại *" required>
+        <input type="email" id="customer-email" placeholder="Email (tùy chọn - để nhận thông báo)">
+        
+        <label for="delivery-date" style="margin-top: 1rem; display: block; font-weight: bold;">Ngày nhận món:</label>
+        <input type="date" id="delivery-date" style="margin-bottom: 0.5rem;">
+        
+        <label for="delivery-time" style="display: block; font-weight: bold;">Giờ nhận món (tùy chọn):</label>
+        <select id="delivery-time">
+          <option value="">Chọn giờ nhận món</option>
+          <option value="Sáng (7h-11h)">Sáng (7h-11h)</option>
+          <option value="Trưa (11h-14h)">Trưa (11h-14h)</option>
+          <option value="Chiều (14h-18h)">Chiều (14h-18h)</option>
+          <option value="Tối (18h-21h)">Tối (18h-21h)</option>
+        </select>
+        
         <button id="place-order" class="btn btn-success">Đặt Hàng</button>
       </div>
     </div>

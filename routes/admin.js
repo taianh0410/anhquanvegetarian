@@ -3,6 +3,8 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const MenuItem = require('../models/MenuItem');
 const Order = require('../models/Order');
+const { sendCompletionEmail, sendCancellationEmail } = require('../utils/emailService');
+const { sendCompletionSMS, sendCancellationSMS } = require('../utils/smsService');
 
 // Middleware kiểm tra đăng nhập
 const isAuthenticated = (req, res, next) => {
@@ -122,6 +124,15 @@ router.post('/orders/:id/complete', isAuthenticated, async (req, res) => {
       { status: 'completed' },
       { new: true }
     );
+    
+    // Gửi email cảm ơn (nếu có email)
+    if (order.email) {
+      await sendCompletionEmail(order);
+    }
+    
+    // Gửi SMS cảm ơn
+    await sendCompletionSMS(order);
+    
     res.json({ message: 'Đã đánh dấu hoàn thành', order });
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -136,6 +147,15 @@ router.post('/orders/:id/cancel', isAuthenticated, async (req, res) => {
       { status: 'cancelled' },
       { new: true }
     );
+    
+    // Gửi email xin lỗi (nếu có email)
+    if (order.email) {
+      await sendCancellationEmail(order);
+    }
+    
+    // Gửi SMS xin lỗi
+    await sendCancellationSMS(order);
+    
     res.json({ message: 'Đã hủy đơn hàng', order });
   } catch (error) {
     res.status(400).json({ message: error.message });

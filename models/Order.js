@@ -9,6 +9,20 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  email: {
+    type: String,
+    required: false,
+    default: ''
+  },
+  deliveryDate: {
+    type: Date,
+    required: false
+  },
+  deliveryTime: {
+    type: String,
+    required: false,
+    default: ''
+  },
   items: [{
     itemId: {
       type: mongoose.Schema.Types.ObjectId,

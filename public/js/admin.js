@@ -127,7 +127,26 @@ async function loadHistory(status = 'all') {
     let orders = await response.json();
     
     // Lọc theo trạng thái
-    if (status !== 'all') {
+    if (status === 'today') {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      orders = orders.filter(order => {
+        if (!order.deliveryDate) return false;
+        const deliveryDate = new Date(order.deliveryDate);
+        deliveryDate.setHours(0, 0, 0, 0);
+        return deliveryDate.getTime() === today.getTime();
+      });
+    } else if (status === 'tomorrow') {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 0, 0);
+      orders = orders.filter(order => {
+        if (!order.deliveryDate) return false;
+        const deliveryDate = new Date(order.deliveryDate);
+        deliveryDate.setHours(0, 0, 0, 0);
+        return deliveryDate.getTime() === tomorrow.getTime();
+      });
+    } else if (status !== 'all') {
       orders = orders.filter(order => order.status === status);
     }
     
@@ -182,6 +201,10 @@ function displayHistory(orders) {
       'confirmed': 'Đã xác nhận'
     };
 
+    const deliveryInfo = order.deliveryDate 
+      ? `<p><strong>📅 Ngày nhận:</strong> ${new Date(order.deliveryDate).toLocaleDateString('vi-VN')}${order.deliveryTime ? ' - ' + order.deliveryTime : ''}</p>`
+      : '';
+
     card.innerHTML = `
       <div class="order-header">
         <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -200,6 +223,7 @@ function displayHistory(orders) {
       <div class="order-info">
         <p><strong>Khách hàng:</strong> ${order.customerName}</p>
         <p><strong>Số điện thoại:</strong> ${order.phoneNumber}</p>
+        ${deliveryInfo}
       </div>
       <div class="order-items">
         ${itemsHTML}
@@ -382,6 +406,10 @@ function displayOrders(orders) {
       });
     }
 
+    const deliveryInfo = order.deliveryDate 
+      ? `<p><strong>📅 Ngày nhận:</strong> ${new Date(order.deliveryDate).toLocaleDateString('vi-VN')}${order.deliveryTime ? ' - ' + order.deliveryTime : ''}</p>`
+      : '';
+
     card.innerHTML = `
       <div class="order-header">
         <div>
@@ -397,6 +425,7 @@ function displayOrders(orders) {
       <div class="order-info">
         <p><strong>Khách hàng:</strong> ${order.customerName}</p>
         <p><strong>Số điện thoại:</strong> ${order.phoneNumber}</p>
+        ${deliveryInfo}
       </div>
       <div class="order-items">
         ${itemsHTML}

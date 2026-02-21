@@ -2,16 +2,20 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
 const { sendTelegramNotification } = require('../utils/telegram');
-// const { sendEmailNotification } = require('../utils/email'); // Bỏ comment nếu muốn dùng email
+const { sendOrderConfirmationEmail } = require('../utils/emailService');
+const { sendNewOrderSMS, sendCustomerConfirmationSMS } = require('../utils/smsService');
 
 // Tạo đơn hàng mới
 router.post('/', async (req, res) => {
   try {
-    const { customerName, phoneNumber, items, combos, totalAmount } = req.body;
+    const { customerName, phoneNumber, email, deliveryDate, deliveryTime, items, combos, totalAmount } = req.body;
 
     const order = new Order({
       customerName,
       phoneNumber,
+      email: email || '',
+      deliveryDate: deliveryDate || null,
+      deliveryTime: deliveryTime || '',
       items,
       combos,
       totalAmount
@@ -19,11 +23,19 @@ router.post('/', async (req, res) => {
 
     await order.save();
 
-    // Gửi thông báo Telegram (nếu có cấu hình)
+    // Gửi thông báo Telegram
     await sendTelegramNotification(order);
     
-    // Gửi thông báo Email (bỏ comment nếu muốn dùng)
-    // await sendEmailNotification(order);
+    // Gửi SMS cho admin (thông báo đơn mới)
+    await sendNewOrderSMS(order);
+    
+    // Gửi SMS cho khách (xác nhận đơn)
+    await sendCustomerConfirmationSMS(order);
+    
+    // Gửi email xác nhận (nếu có email)
+    if (email) {
+      await sendOrderConfirmationEmail(order);
+    }
 
     res.status(201).json({ 
       message: 'Đặt hàng thành công!',

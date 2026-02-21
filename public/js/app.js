@@ -274,6 +274,9 @@ function removeItem(index, type) {
 async function placeOrder() {
   const customerName = document.getElementById('customer-name').value.trim();
   const phoneNumber = document.getElementById('customer-phone').value.trim();
+  const email = document.getElementById('customer-email').value.trim();
+  const deliveryDate = document.getElementById('delivery-date').value;
+  const deliveryTime = document.getElementById('delivery-time').value;
 
   if (!customerName || !phoneNumber) {
     alert('Vui lòng nhập đầy đủ họ tên và số điện thoại');
@@ -291,6 +294,9 @@ async function placeOrder() {
   const orderData = {
     customerName,
     phoneNumber,
+    email: email || '',
+    deliveryDate: deliveryDate || null,
+    deliveryTime: deliveryTime || '',
     items: cart.items,
     combos: cart.combos,
     totalAmount
@@ -317,6 +323,9 @@ async function placeOrder() {
       // Reset form
       document.getElementById('customer-name').value = '';
       document.getElementById('customer-phone').value = '';
+      document.getElementById('customer-email').value = '';
+      document.getElementById('delivery-date').value = '';
+      document.getElementById('delivery-time').value = '';
       
       // Reset quantity displays
       menuItems.forEach(item => {

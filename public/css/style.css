@@ -397,7 +397,8 @@ body {
   margin-bottom: 1rem;
 }
 
-.checkout-form input {
+.checkout-form input,
+.checkout-form select {
   width: 100%;
   padding: 0.8rem;
   margin-bottom: 1rem;
@@ -406,9 +407,15 @@ body {
   font-size: 1rem;
 }
 
-.checkout-form input:focus {
+.checkout-form input:focus,
+.checkout-form select:focus {
   outline: none;
   border-color: #667eea;
+}
+
+.checkout-form label {
+  color: #333;
+  font-size: 0.95rem;
 }
 
 /* Buttons */
