@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đồ Chay Tâm Linh - Thanh Tịnh & An Lạc</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="logo">
+        <img src="https://i.postimg.cc/Zn1HRRHc/197770231-971747230291912-3198727751516866401-n.jpg" alt="Thanh tịnh - An lạc - Từ bi" class="logo-image">
+      </div>
+      <nav class="nav">
+        <a href="#single-items">Món Lẻ</a>
+        <a href="#combos">Mâm Cúng</a>
+        <a href="#cart" class="cart-btn">
+          🛒 Giỏ hàng <span class="cart-count">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h2 class="fade-in">Đồ Chay Thanh Tịnh</h2>
+      <p class="fade-in-delay">Món ăn chay ngon miệng, mâm cúng tâm linh chu đáo</p>
+    </div>
+  </section>
+
+  <!-- Món Lẻ -->
+  <section id="single-items" class="section">
+    <div class="container">
+      <h2 class="section-title">🍜 Món Lẻ</h2>
+      <div id="single-items-grid" class="items-grid">
+        <!-- Sẽ được load bằng JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Mâm Cúng Combo -->
+  <section id="combos" class="section combo-section">
+    <div class="container">
+      <h2 class="section-title">🎁 Mâm Cúng Tâm Linh</h2>
+      <p class="section-subtitle">Chọn mức giá mâm cúng phù hợp với gia đình bạn</p>
+      
+      <div class="combo-options">
+        <div class="combo-card" data-price="500000">
+          <div class="combo-header">
+            <h3>Mâm Cúng Cơ Bản</h3>
+            <p class="combo-price">500.000đ</p>
+          </div>
+          <button class="btn-select-combo">Chọn mâm này</button>
+        </div>
+
+        <div class="combo-card featured" data-price="1000000">
+          <div class="combo-badge">Phổ biến</div>
+          <div class="combo-header">
+            <h3>Mâm Cúng Tiêu Chuẩn</h3>
+            <p class="combo-price">1.000.000đ</p>
+          </div>
+          <button class="btn-select-combo">Chọn mâm này</button>
+        </div>
+
+        <div class="combo-card" data-price="2000000">
+          <div class="combo-header">
+            <h3>Mâm Cúng Cao Cấp</h3>
+            <p class="combo-price">2.000.000đ</p>
+          </div>
+          <button class="btn-select-combo">Chọn mâm này</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal Chọn Món Combo -->
+  <div id="combo-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Chọn món cho mâm <span id="combo-price-display"></span></h2>
+      <p class="modal-subtitle">Vui lòng chọn các món bạn muốn có trong mâm cúng</p>
+      <div id="combo-items-list" class="combo-items-list">
+        <!-- Sẽ được load bằng JavaScript -->
+      </div>
+      <button id="add-combo-to-cart" class="btn btn-primary">Thêm vào giỏ hàng</button>
+    </div>
+  </div>
+
+  <!-- Giỏ Hàng Modal -->
+  <div id="cart-modal" class="modal">
+    <div class="modal-content cart-modal-content">
+      <span class="close">&times;</span>
+      <h2>🛒 Giỏ Hàng Của Bạn</h2>
+      
+      <div id="cart-items">
+        <!-- Sẽ được load bằng JavaScript -->
+      </div>
+
+      <div class="cart-total">
+        <h3>Tổng cộng: <span id="total-amount">0đ</span></h3>
+      </div>
+
+      <div class="checkout-form">
+        <h3>Thông tin đặt hàng</h3>
+        <input type="text" id="customer-name" placeholder="Họ và tên *" required>
+        <input type="tel" id="customer-phone" placeholder="Số điện thoại *" required>
+        <button id="place-order" class="btn btn-success">Đặt Hàng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>© 2024 Đồ Chay Tâm Linh - Mang đến sự thanh tịnh cho tâm hồn</p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

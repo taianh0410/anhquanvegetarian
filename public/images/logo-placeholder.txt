@@ -1,0 +1,10 @@
+Đặt file logo của bạn vào đây với tên: logo.png
+
+Yêu cầu:
+- Tên file: logo.png (hoặc logo.jpg, logo.svg)
+- Kích thước đề xuất: Chiều cao 120-200px, nền trong suốt
+- Nội dung: Logo với text "Thanh tịnh - An lạc - Từ bi"
+- Format: PNG với nền trong suốt (khuyến nghị) hoặc JPG
+
+Nếu dùng tên file khác, cập nhật trong file public/index.html dòng:
+<img src="images/logo.png" alt="Thanh tịnh - An lạc - Từ bi" class="logo-image">

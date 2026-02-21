@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Quản Trị</title>
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login-screen" class="login-container">
+    <div class="login-box">
+      <h1>🔐 Đăng Nhập Admin</h1>
+      <form id="login-form">
+        <input type="text" id="username" placeholder="Tên đăng nhập" required>
+        <input type="password" id="password" placeholder="Mật khẩu" required>
+        <button type="submit" class="btn btn-primary">Đăng Nhập</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div id="admin-dashboard" style="display: none;">
+    <header class="admin-header">
+      <div class="container">
+        <img src="https://i.postimg.cc/Zn1HRRHc/197770231-971747230291912-3198727751516866401-n.jpg">
+        <button id="logout-btn" class="btn btn-danger">Đăng Xuất</button>
+      </div>
+    </header>
+
+    <div class="container admin-content">
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="menu">Quản Lý Thực Đơn</button>
+        <button class="tab-btn" data-tab="orders">Quản Lý Đơn Hàng</button>
+      </div>
+
+      <!-- Menu Management -->
+      <div id="menu-tab" class="tab-content active">
+        <div class="section-header">
+          <h2>Thực Đơn</h2>
+          <button id="add-item-btn" class="btn btn-success">+ Thêm Món Mới</button>
+        </div>
+        <div id="menu-list" class="admin-grid">
+          <!-- Sẽ được load bằng JavaScript -->
+        </div>
+      </div>
+
+      <!-- Orders Management -->
+      <div id="orders-tab" class="tab-content">
+        <h2>Đơn Hàng Gần Đây</h2>
+        <div id="orders-list">
+          <!-- Sẽ được load bằng JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Thêm/Sửa Món -->
+  <div id="item-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 id="modal-title">Thêm Món Mới</h2>
+      <form id="item-form">
+        <input type="hidden" id="item-id">
+        <label>Tên món:</label>
+        <input type="text" id="item-name" required>
+        
+        <label>Giá (VNĐ):</label>
+        <input type="number" id="item-price" required>
+        
+        <label>URL Ảnh:</label>
+        <input type="text" id="item-image" placeholder="https://...">
+        
+        <label>Mô tả:</label>
+        <textarea id="item-description" rows="3"></textarea>
+        
+        <label>
+          <input type="checkbox" id="item-instock" checked>
+          Còn hàng
+        </label>
+        
+        <button type="submit" class="btn btn-primary">Lưu</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
