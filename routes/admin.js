@@ -78,16 +78,29 @@ router.delete('/menu/:id', isAuthenticated, async (req, res) => {
   }
 });
 
-// Quản lý đơn hàng
+// Quản lý đơn hàng (chỉ hiển thị đơn chưa hoàn thành)
 router.get('/orders', isAuthenticated, async (req, res) => {
   try {
-    const orders = await Order.find().sort({ createdAt: -1 }).limit(100);
+    const orders = await Order.find({ 
+      status: { $ne: 'completed' } 
+    }).sort({ createdAt: -1 }).limit(100);
     res.json(orders);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
+// Lịch sử đơn hàng (tất cả đơn)
+router.get('/orders/history', isAuthenticated, async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ createdAt: -1 }).limit(200);
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+// Cập nhật trạng thái đơn hàng
 router.put('/orders/:id/status', isAuthenticated, async (req, res) => {
   try {
     const order = await Order.findByIdAndUpdate(
@@ -96,6 +109,20 @@ router.put('/orders/:id/status', isAuthenticated, async (req, res) => {
       { new: true }
     );
     res.json(order);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// Đánh dấu đơn hàng đã hoàn thành
+router.post('/orders/:id/complete', isAuthenticated, async (req, res) => {
+  try {
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status: 'completed' },
+      { new: true }
+    );
+    res.json({ message: 'Đã đánh dấu hoàn thành', order });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

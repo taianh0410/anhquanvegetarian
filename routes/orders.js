@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
 const { sendTelegramNotification } = require('../utils/telegram');
+// const { sendEmailNotification } = require('../utils/email'); // Bỏ comment nếu muốn dùng email
 
 // Tạo đơn hàng mới
 router.post('/', async (req, res) => {
@@ -18,8 +19,11 @@ router.post('/', async (req, res) => {
 
     await order.save();
 
-    // Gửi thông báo Telegram
+    // Gửi thông báo Telegram (nếu có cấu hình)
     await sendTelegramNotification(order);
+    
+    // Gửi thông báo Email (bỏ comment nếu muốn dùng)
+    // await sendEmailNotification(order);
 
     res.status(201).json({ 
       message: 'Đặt hàng thành công!',

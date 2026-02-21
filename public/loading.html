@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đang khởi động - Bếp Chay</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .loading-container {
+      text-align: center;
+      padding: 2rem;
+      max-width: 600px;
+    }
+
+    .fire-icon {
+      font-size: 5rem;
+      animation: fire 1.5s ease-in-out infinite;
+      margin-bottom: 2rem;
+    }
+
+    @keyframes fire {
+      0%, 100% {
+        transform: scale(1) translateY(0);
+        filter: hue-rotate(0deg);
+      }
+      25% {
+        transform: scale(1.1) translateY(-10px);
+        filter: hue-rotate(20deg);
+      }
+      50% {
+        transform: scale(0.95) translateY(5px);
+        filter: hue-rotate(-20deg);
+      }
+      75% {
+        transform: scale(1.05) translateY(-5px);
+        filter: hue-rotate(10deg);
+      }
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      animation: fadeIn 1s ease-in;
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      margin-bottom: 3rem;
+      opacity: 0.9;
+      animation: fadeIn 1.5s ease-in;
+    }
+
+    .loading-dots {
+      display: inline-block;
+      margin-left: 0.5rem;
+    }
+
+    .loading-dots span {
+      animation: blink 1.4s infinite;
+      font-size: 1.5rem;
+    }
+
+    .loading-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .loading-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes blink {
+      0%, 80%, 100% {
+        opacity: 0;
+      }
+      40% {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .contact-section {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 2px solid rgba(255,255,255,0.3);
+      animation: fadeIn 2s ease-in;
+    }
+
+    .contact-text {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.9;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .social-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+      color: white;
+      transition: transform 0.3s, opacity 0.3s;
+      padding: 1rem;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      min-width: 120px;
+    }
+
+    .social-link:hover {
+      transform: translateY(-10px) scale(1.05);
+      background: rgba(255,255,255,0.2);
+    }
+
+    .social-icon {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .social-name {
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255,255,255,0.3);
+      border-top: 5px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 2rem auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2rem;
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+      }
+
+      .social-links {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .social-link {
+        min-width: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading-container">
+    <div class="fire-icon">🔥</div>
+    
+    <h1>Bếp Chay Đang Đốt Lò</h1>
+    <p class="subtitle">
+      Bạn chờ xíu nha
+      <span class="loading-dots">
+        <span>.</span><span>.</span><span>.</span>
+      </span>
+    </p>
+
+    <div class="spinner"></div>
+
+    <div class="contact-section">
+      <p class="contact-text">Nếu có vấn đề, liên hệ qua:</p>
+      
+      <div class="social-links">
+        <!-- SỬA SỐ ZALO Ở ĐÂY -->
+        <a href="https://zalo.me/0904257782" target="_blank" class="social-link">
+          <div class="social-icon">💬</div>
+          <div class="social-name">Zalo</div>
+        </a>
+
+        <!-- SỬA FACEBOOK PAGE Ở ĐÂY -->
+        <a href="https://www.facebook.com/chayanhquan" target="_blank" class="social-link">
+          <div class="social-icon">📘</div>
+          <div class="social-name">Facebook</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Tự động chuyển hướng khi server sẵn sàng
+    let attempts = 0;
+    const maxAttempts = 60; // Thử trong 60 lần (khoảng 2 phút)
+
+    function checkServer() {
+      attempts++;
+      
+      fetch('/api/menu')
+        .then(response => {
+          if (response.ok) {
+            // Server đã sẵn sàng, chuyển về trang chủ
+            window.location.href = '/';
+          } else {
+            // Thử lại sau 2 giây
+            if (attempts < maxAttempts) {
+              setTimeout(checkServer, 2000);
+            }
+          }
+        })
+        .catch(error => {
+          // Server chưa sẵn sàng, thử lại
+          if (attempts < maxAttempts) {
+            setTimeout(checkServer, 2000);
+          }
+        });
+    }
+
+    // Bắt đầu kiểm tra sau 3 giây
+    setTimeout(checkServer, 3000);
+  </script>
+</body>
+</html>

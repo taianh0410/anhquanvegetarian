@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đang tải - Bếp Chay</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // Kiểm tra xem server đã sẵn sàng chưa
+    function checkServerStatus() {
+      const startTime = Date.now();
+      
+      fetch('/api/menu', { 
+        method: 'GET',
+        cache: 'no-cache'
+      })
+      .then(response => {
+        const loadTime = Date.now() - startTime;
+        
+        // Nếu mất hơn 5 giây, có thể server đang khởi động
+        if (loadTime > 5000) {
+          window.location.href = '/loading';
+        } else {
+          // Server đã sẵn sàng, load trang bình thường
+          window.location.href = '/';
+        }
+      })
+      .catch(error => {
+        // Server chưa sẵn sàng, chuyển đến trang loading
+        window.location.href = '/loading';
+      });
+    }
+
+    // Chạy ngay khi trang load
+    checkServerStatus();
+  </script>
+</body>
+</html>

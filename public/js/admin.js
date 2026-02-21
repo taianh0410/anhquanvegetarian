@@ -115,7 +115,105 @@ function switchTab(tab) {
 
   if (tab === 'orders') {
     loadOrders();
+  } else if (tab === 'history') {
+    loadHistory();
   }
+}
+
+// Load lịch sử đơn hàng
+async function loadHistory(status = 'all') {
+  try {
+    const response = await fetch('/api/admin/orders/history');
+    let orders = await response.json();
+    
+    // Lọc theo trạng thái
+    if (status !== 'all') {
+      orders = orders.filter(order => order.status === status);
+    }
+    
+    displayHistory(orders);
+  } catch (error) {
+    console.error('Lỗi load history:', error);
+  }
+}
+
+// Hiển thị lịch sử
+function displayHistory(orders) {
+  const historyList = document.getElementById('history-list');
+  
+  if (orders.length === 0) {
+    historyList.innerHTML = '<p style="text-align: center; color: #999;">Chưa có đơn hàng nào</p>';
+    return;
+  }
+
+  historyList.innerHTML = '';
+
+  orders.forEach(order => {
+    const card = document.createElement('div');
+    card.className = 'order-card history-order-card';
+    
+    const date = new Date(order.createdAt).toLocaleString('vi-VN');
+    
+    let itemsHTML = '';
+    if (order.items && order.items.length > 0) {
+      itemsHTML = '<h4>Món lẻ:</h4><ul>';
+      order.items.forEach(item => {
+        itemsHTML += `<li>${item.name} x${item.quantity} - ${item.price.toLocaleString('vi-VN')}đ</li>`;
+      });
+      itemsHTML += '</ul>';
+    }
+
+    let combosHTML = '';
+    if (order.combos && order.combos.length > 0) {
+      combosHTML = '<h4>Mâm cúng:</h4>';
+      order.combos.forEach(combo => {
+        combosHTML += `<p><strong>Mâm ${combo.comboPrice.toLocaleString('vi-VN')}đ:</strong></p><ul>`;
+        combo.selectedItems.forEach(item => {
+          combosHTML += `<li>${item}</li>`;
+        });
+        combosHTML += '</ul>';
+      });
+    }
+
+    const statusText = {
+      'completed': 'Đã hoàn thành',
+      'cancelled': 'Đã hủy',
+      'pending': 'Chờ xử lý',
+      'confirmed': 'Đã xác nhận'
+    };
+
+    card.innerHTML = `
+      <div class="order-header">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <strong>Đơn hàng #${order._id.slice(-6)}</strong>
+            <p style="color: #999; font-size: 0.9rem;">${date}</p>
+          </div>
+          <div style="text-align: right;">
+            <span class="status-badge ${order.status}">${statusText[order.status] || order.status}</span>
+            <p style="font-size: 1.5rem; color: #667eea; font-weight: bold; margin-top: 0.5rem;">
+              ${order.totalAmount.toLocaleString('vi-VN')}đ
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="order-info">
+        <p><strong>Khách hàng:</strong> ${order.customerName}</p>
+        <p><strong>Số điện thoại:</strong> ${order.phoneNumber}</p>
+      </div>
+      <div class="order-items">
+        ${itemsHTML}
+        ${combosHTML}
+      </div>
+    `;
+    
+    historyList.appendChild(card);
+  });
+}
+
+// Lọc lịch sử theo trạng thái
+function filterHistory(status) {
+  loadHistory(status);
 }
 
 // Load menu
@@ -259,6 +357,7 @@ function displayOrders(orders) {
   orders.forEach(order => {
     const card = document.createElement('div');
     card.className = 'order-card';
+    card.id = `order-${order._id}`;
     
     const date = new Date(order.createdAt).toLocaleString('vi-VN');
     
@@ -303,8 +402,73 @@ function displayOrders(orders) {
         ${itemsHTML}
         ${combosHTML}
       </div>
+      <div class="order-actions">
+        <button class="btn btn-success" onclick="completeOrder('${order._id}')">
+          ✓ Đã Hoàn Thành
+        </button>
+      </div>
     `;
     
     ordersList.appendChild(card);
   });
+}
+
+// Đánh dấu đơn hàng đã hoàn thành
+async function completeOrder(orderId) {
+  if (!confirm('Xác nhận đơn hàng này đã hoàn thành?')) return;
+
+  try {
+    const response = await fetch(`/api/admin/orders/${orderId}/complete`, {
+      method: 'POST'
+    });
+
+    if (response.ok) {
+      // Thêm hiệu ứng fade out
+      const orderCard = document.getElementById(`order-${orderId}`);
+      orderCard.style.transition = 'opacity 0.5s, transform 0.5s';
+      orderCard.style.opacity = '0';
+      orderCard.style.transform = 'translateX(100px)';
+      
+      // Xóa khỏi DOM sau khi animation xong
+      setTimeout(() => {
+        orderCard.remove();
+        
+        // Kiểm tra nếu không còn đơn hàng nào
+        const ordersList = document.getElementById('orders-list');
+        if (ordersList.children.length === 0) {
+          ordersList.innerHTML = '<p style="text-align: center; color: #999;">Chưa có đơn hàng nào</p>';
+        }
+      }, 500);
+      
+      // Hiển thị thông báo
+      showNotification('✅ Đã đánh dấu hoàn thành');
+    }
+  } catch (error) {
+    console.error('Lỗi:', error);
+    alert('Có lỗi xảy ra');
+  }
+}
+
+// Hiển thị thông báo tạm thời
+function showNotification(message) {
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #2ecc71;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 10000;
+    animation: slideIn 0.3s ease-out;
+  `;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.style.animation = 'slideOut 0.3s ease-out';
+    setTimeout(() => notification.remove(), 300);
+  }, 2000);
 }

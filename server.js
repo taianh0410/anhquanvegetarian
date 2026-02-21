@@ -42,6 +42,11 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
+// Loading page khi server đang khởi động
+app.get('/loading', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'loading.html'));
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server đang chạy tại http://localhost:${PORT}`);
